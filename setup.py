@@ -1,14 +1,18 @@
 #!/usr/bin/python
 
-from distutils.core import setup
+try:
+    from setuptools import setup
+except ImportError:
+    from distutils.core import setup
 
 setup(name = "python-networkmanager",
-      version = "1.2.1",
+      version = "2.0.0",
       author = "Dennis Kaarsemaker",
       author_email = "dennis@kaarsemaker.net",
       url = "http://github.com/seveas/python-networkmanager",
       description = "Easy communication with NetworkManager",
       py_modules = ["NetworkManager"],
+      install_requires = ["dbus-python", "six"],
       classifiers = [
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
