@@ -543,7 +543,7 @@ class fixups(object):
                         val[key] = bool(int(val[key]))
                     elif val[key].isdigit():
                         val[key] = int(val[key])
-                    elif key in ('domain_name_servers', 'ntp_servers', 'routers'):
+                    elif key in {'domain_name_servers', 'ntp_servers', 'routers'}:
                         val[key] = val[key].split()
 
             return val
@@ -648,28 +648,25 @@ class fixups(object):
                 fixups.mask_to_dbus(netmask),
                 fixups.addr_to_dbus(gateway,family)
             ]
-        else:
-            return dbus.Struct(
-                (
-                    fixups.addr_to_dbus(addr,family),
-                    fixups.mask_to_dbus(netmask),
-                    fixups.addr_to_dbus(gateway,family)
-                ), signature = 'ayuay'
-            )
+        return dbus.Struct(
+            (
+                fixups.addr_to_dbus(addr,family),
+                fixups.mask_to_dbus(netmask),
+                fixups.addr_to_dbus(gateway,family)
+            ), signature = 'ayuay'
+        )
 
     @staticmethod
     def addr_to_python(addr,family):
         if (family == socket.AF_INET):
             return socket.inet_ntop(family,struct.pack('I', addr))
-        else:
-            return socket.inet_ntop(family,b''.join(addr))
+        return socket.inet_ntop(family,b''.join(addr))
 
     @staticmethod
     def addr_to_dbus(addr,family):
         if (family == socket.AF_INET):
             return dbus.UInt32(struct.unpack('I', socket.inet_pton(family,addr))[0])
-        else:
-            return dbus.ByteArray(socket.inet_pton(family,addr))
+        return dbus.ByteArray(socket.inet_pton(family,addr))
 
     @staticmethod
     def mask_to_dbus(mask):
